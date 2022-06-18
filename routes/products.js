@@ -6,7 +6,7 @@ const router = express.Router()
 router.get('/', (req, res, next) => {
     try {
         mysql.getConnection((error, conn) => {
-            conn.query('SELECT * FROM products;', (err, result, field) => {
+            conn.query('SELECT * FROM products;', (err, result, fields) => {
                 conn.release()
                 const response = {
                     message: "products returned successfully",
@@ -43,7 +43,7 @@ router.get('/:product_id', (req, res, next) => {
     try {
         mysql.getConnection((error, conn) => {
             conn.query('SELECT * FROM products WHERE id=?;',
-            [req.params.product_id], (err, result, field) => {
+            [req.params.product_id], (err, result, fields) => {
                 conn.release()
                 const {id, name, price} = result[0]
                 const response = {
@@ -75,7 +75,7 @@ router.post('/', (req, res, next) => {
     try {
         mysql.getConnection((error, conn) => {
             conn.query('INSERT INTO products (name, price) VALUES (?,?);',
-                [req.body.name, req.body.price], (err, result, field) => {
+                [req.body.name, req.body.price], (err, result, fields) => {
                     conn.release();
                     const response = {
                         message: "product created successfuly",
@@ -106,7 +106,7 @@ router.delete('/:product_id', (req, res, next) => {
         mysql.getConnection((error, conn) => {
             conn.query(`DELETE FROM products
                             WHERE id = ?;`,
-                [req.params.product_id], (err, result, field) => {
+                [req.params.product_id], (err, result, fields) => {
                     conn.release()
                     const response = {
                         message: 'Product deleted successfully',
@@ -133,7 +133,7 @@ router.patch('/', (req, res, next) => {
                             SET name    = ?,
                                 price   = ?
                             WHERE id    = ?;`,
-                [req.body.name, req.body.price, req.body.id], (err, result, field) => {
+                [req.body.name, req.body.price, req.body.id], (err, result, fields) => {
                     conn.release();
                     const {id, name, price} = req.body
                     const response = {
