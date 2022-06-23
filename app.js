@@ -1,8 +1,11 @@
-const productsRoutes = require("./routes/products")
-const pedidosRoutes = require("./routes/orders")
 const express = require("express");
 const morgan = require("morgan")
 const bodyParser = require("body-parser")
+
+const productsRoutes = require("./routes/products")
+const pedidosRoutes = require("./routes/orders")
+const users = require("./routes/users")
+
 const  app = express();
 
 app.use(morgan("dev"))
@@ -27,6 +30,7 @@ app.use((req, res, next) => {
 
 app.use('/products', productsRoutes);
 app.use('/orders', pedidosRoutes);
+app.use('/users', users);
 
 app.use((req, res, next) => {
     const error = new Error("undefiened route");
