@@ -4,6 +4,8 @@
         "MYSQL_PASSWORD": "",
         "MYSQL_DATABASE": "ecommerce",
         "MYSQL_HOST": "localhost",
-        "MYSQL_PORT": 3306
+        "MYSQL_PORT": 3306,
+
+        "APP_URL": "http://localhost:3000"
     }
 }
