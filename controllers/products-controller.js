@@ -29,7 +29,12 @@ module.exports = {
     },
     show: async (req, res, next) => {
         try {
-            const result = await mysql.execute('SELECT * FROM products WHERE id=?;', [req.params.product_id])
+            const result = await mysql.execute('SELECT * FROM products WHERE id=?;', [req.params.product_id]);
+            if (result.length === 0) {
+                return res.status(404).send({
+                    message: 'Product not founded'
+                });
+            }
             const {id, name, price, image} = result[0]
             const response = {
                 message: "product returned successfuly",
