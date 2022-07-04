@@ -44,7 +44,7 @@ module.exports = {
             const result = await mysql.execute(`SELECT orders.id,
                                                        orders.quantity,
                                                        orders.product_id,
-                                                       products.price
+                                                       products.price,
                                                        products.name
                                                   FROM orders
                                             INNER JOIN products
@@ -99,7 +99,10 @@ module.exports = {
     },
     destroy: async (req, res, next) => {
         try {
-            await mysql.execute('DELETE FROM orders WHERE id = ?;', req.params.id);
+            const result = await mysql.execute('DELETE FROM orders WHERE id = ?;', req.params.order_id);
+            // const response = result.affectedRows
+            if (result.affectedRows == 0) {return res.status(404).send({message: 'Order not founded'})}
+            console.log(response);
             return res.status(200).send({
                 message: 'Order canceled',
                 request: {

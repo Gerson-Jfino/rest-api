@@ -105,7 +105,8 @@ module.exports = {
     },
     destroy: async (req, res, next) => {
         try {
-            await mysql.execute('DELETE FROM products WHERE id = ?;', req.params.id);
+            const result = await mysql.execute('DELETE FROM products WHERE id = ?;', req.params.id);
+            if (result.affectedRows) {res.status(500).send({message: 'No product founded'})}
             const response = {
                 message: 'Product deleted successfully',
                 request: {

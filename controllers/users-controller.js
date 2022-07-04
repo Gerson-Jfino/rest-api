@@ -42,7 +42,6 @@ module.exports = {
             const { password } = user[0];
             bcrypt.compare(req.body.password, password, async (err, value) => {
                 if (err) { return res.status(401).send({message: 'Unauthorized'}); }
-                if (!value) { return res.status(401).send({message: 'Unauthorized'}); }
                 if (value) {
                     function userData () {
                         const {id, name, email} = user[0];
@@ -56,6 +55,8 @@ module.exports = {
                         token
                     }
                     res.status(200).send(response);
+                } else {
+                    return res.status(401).send({message: 'Unauthorized'});
                 }
             })
         } catch (error) {
