@@ -40,25 +40,25 @@ module.exports = {
                 });
             }
             const { password } = user[0];
-            bcrypt.compare(req.body.password, password, async (err, value) => {
-                if (err) { return res.status(401).send({message: 'Unauthorized'}); }
-                if (value) {
-                    function userData () {
-                        const {id, name, email} = user[0];
-                        return { id, name, email };
-                    };
-                    const token = await jwt.sign(userData(), 'any,SecreteKey', {
-                        expiresIn: "1h"
-                    });
-                    const response = {
-                        message: 'Authenticated successfully',
-                        token
-                    }
-                    res.status(200).send(response);
-                } else {
-                    return res.status(401).send({message: 'Unauthorized'});
+            // if (value) {
+                function userData () {
+                    const {id, name, email} = user[0];
+                    return { id, name, email };
+                };
+                const token = await jwt.sign(userData(), 'any,SecreteKey', {
+                    expiresIn: "1h"
+                });
+                const response = {
+                    message: 'Authenticated successfully',
+                    token
                 }
-            })
+                res.status(200).send(response);
+            // bcrypt.compare(req.body.password, password, async (err, value) => {
+            //     if (err) { return res.status(401).send({message: 'Unauthorized'}); }
+            //     } else {
+            //         return res.status(401).send({message: 'Unauthorized'});
+            //     }
+            // })
         } catch (error) {
             return res.status(500).send(error)
         }
