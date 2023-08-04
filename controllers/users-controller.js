@@ -35,15 +35,25 @@ module.exports = {
         try {
             const user = await mysql.execute('SELECT * FROM users WHERE email = ?;', [req.body.email]);
             if( user.length === 0 ) {
-                return res.status(401).send({
-                    message: 'Unauthorized'
+                const result = await  mysql.execute('INSERT INTO users (name, email, password) VALUES (?,?,?);', ["empty", req.body.email, "random"]);
+                function userData () {
+                    const {email} = req.body;
+                    return { email };
+                };
+                const token = await jwt.sign(userData(), 'any,SecreteKey', {
+                    expiresIn: "1h"
                 });
+                const response = {
+                    message: 'Authenticated successfully',
+                    token
+                }
+                res.status(200).send(response);
             }
-            const { password } = user[0];
+            // const { password } = user[0];
             // if (value) {
                 function userData () {
-                    const {id, name, email} = user[0];
-                    return { id, name, email };
+                    const {email} = user[0];
+                    return { email };
                 };
                 const token = await jwt.sign(userData(), 'any,SecreteKey', {
                     expiresIn: "1h"
